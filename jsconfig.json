@@ -1,0 +1,14 @@
+{
+	"compilerOptions": {
+		"experimentalDecorators": true,
+		"baseUrl": "src"
+	},
+	"include": [
+		"src",
+		"../common/ui"
+	],
+	"exclude": [
+		"node_modules",
+		"dist"
+	]
+}
