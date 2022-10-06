@@ -134,8 +134,8 @@ class Game {
 		this.map = new Map(this, MAP_SIZE);
 
 		this.snakes = [
-			new Snake(this, "#77D6C0", 1, 1, 3, DIRECTIONS.RIGHT),
-			new Snake(this, "#40B8EF", MAP_SIZE - 2, MAP_SIZE - 2, 3, DIRECTIONS.LEFT)
+			new Snake(this, "#77D6C0", 1, 1, 3, DIRECTIONS.RIGHT)
+			// new Snake(this, "#40B8EF", MAP_SIZE - 2, MAP_SIZE - 2, 3, DIRECTIONS.LEFT)
 		];
 
 		this.generateApple();
@@ -197,6 +197,25 @@ class Game {
 			this.snakes[1].direction = DIRECTIONS.DOWN;
 		}
 	}
+
+	handleOnClick(event) {
+		const x = (event.pageX - event.target.offsetLeft) / event.target.width;
+		const y = (event.pageY - event.target.offsetTop) / event.target.height;
+
+		if ((x > 0 && x < 0.5 && y > 0 && y < 0.5 && y < x) ||
+			(x > 0.5 && x < 1 && y > 0 && y < 0.5 && y < 1 - x)) {
+			this.snakes[0].direction = DIRECTIONS.UP;
+		} else if ((x > 0.5 && x < 1 && y > 0 && y < 0.5 && y > 1 - x) ||
+			(x > 0.5 && x < 1 && y > 0.5 && y < 1 && y < x)) {
+			this.snakes[0].direction = DIRECTIONS.RIGHT;
+		} else if ((x > 0 && x < 0.5 && y > 0.5 && y < 1 && y > 1 - x) ||
+			(x > 0.5 && x < 1 && y > 0.5 && y < 1 && y > x)) {
+			this.snakes[0].direction = DIRECTIONS.DOWN;
+		} else if ((x > 0 && x < 0.5 && y > 0 && y < 0.5 && y > x) ||
+			(x > 0 && x < 0.5 && y > 0.5 && y < 1 && y < 1 - x)) {
+			this.snakes[0].direction = DIRECTIONS.LEFT;
+		}
+	}
 }
 
 const UPDATE_INTERVAL = 1000 / 8;
@@ -214,7 +233,10 @@ class App extends React.Component {
 	}
 
 	render() {
-		return <canvas ref="canvas" width={400} height={400} />;
+		return <canvas ref="canvas" width={400} height={400}
+			onClick={event => this.game.handleOnClick(event)}
+			onTouchEnd={event => this.game.handleOnClick(event)}
+		/>;
 	}
 }
 
